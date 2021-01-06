@@ -17,33 +17,52 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
+	var url = "";
 	const clickedNotification = event.notification;
 	clickedNotification.close();
 
 	if (!event.action) {
 		if (typeof event.notification.data["url"] == "string") {
-			event.waitUntil(
-				clients.matchAll({
-					type: "window"
-					}).then(function(clientList) {
-					for (var i = 0; i < clientList.length; i++) {
-						var client = clientList[i];
-						if (client.url.indexOf(event.notification.data["url"]) >=0  && 'focus' in client) {
-							return client.focus();
-						}
-					}
-					clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
-				}
-			))
+			url	= event.notification.data["url"]
 		}
 	} else {
 		if (typeof event.notification.data["actions"] == "object") {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
-				event.waitUntil(
-					clients.openWindow(action["url"])	//.then(windowClient => windowClient ? windowClient.focus() : null)
-				)
+				url	= action["url"]
 			}
 		}
+	}
+	if (typeof url == "string") {
+		event.waitUntil(
+			clients.matchAll({
+				type: "window"
+				}).then(function(clientList) {
+				for (var i = 0; i < clientList.length; i++) {
+					var client = clientList[i];
+					if ('focus' in client) {
+						client.navigate(url).then(function (windowClient) {
+							windowClient.focus();
+							if (!event.reply) {
+								windowClient.postMessage({
+									message: event.reply,
+									time: new Date().toString(),
+								});
+							} 
+						});
+						return client.focus();
+					}
+				}
+				clients.openWindow(url).then(function (windowClient) {
+					windowClient.focus();
+					if (!event.reply) {
+						windowClient.postMessage({
+							message: event.reply,
+							time: new Date().toString(),
+						});
+					} 
+				})
+			}
+		))
 	}
 });
