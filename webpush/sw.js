@@ -30,19 +30,22 @@ self.addEventListener('notificationclick', function(event) {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
 				url	= action["url"];
-				fetch(url, {
+				return fetch(url, {
 					method: 'POST',
-					headers: {
+					headers: new Headers({
 					'Content-Type': 'application/json'
-					},
+					}),
 					body: '{"action":"'+event.action+'","msg":"'+event.reply+'"}'
 				})
 				.then(function(response) {
 					if (!response.ok) {
 						throw new Error('Bad status code from server.');
 					}
+					console.log('enviado aprovação para o servidor');
 					return response.json();
-				})
+				}).catch(function(error) {
+					console.log('There has been a problem with your fetch operation: ' + error.message);
+				  })
 			}
 		}
 	}
