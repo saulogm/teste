@@ -26,7 +26,7 @@ self.addEventListener('notificationclick', function(event) {
 	if (!event.action) {
 		if (typeof event.notification.data["url"] == "string") {
 			event.waitUntil(
-				clients.openWindow(event.notification.data.url)
+				clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
 			)
 		}
 	} else {
@@ -34,7 +34,7 @@ self.addEventListener('notificationclick', function(event) {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
 				event.waitUntil(
-					clients.openWindow(action["url"])
+					clients.openWindow(action["url"]).then(windowClient => windowClient ? windowClient.focus() : null)
 				)
 			}
 		}
