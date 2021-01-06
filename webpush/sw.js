@@ -23,13 +23,26 @@ self.addEventListener('notificationclick', function(event) {
 
 	if (!event.action) {
 		if (typeof event.notification.data["url"] == "string") {
-			url	= event.notification.data["url"]
+			url	= event.notification.data["url"];
 		}
 	} else {
 		if (typeof event.notification.data["actions"] == "object") {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
-				url	= action["url"]
+				url	= action["url"];
+				fetch(url, {
+					method: 'POST',
+					headers: {
+					'Content-Type': 'application/json'
+					},
+					body: '{"action":"'+event.action+'","msg":"'+event.reply+'"}'
+				})
+				.then(function(response) {
+					if (!response.ok) {
+						throw new Error('Bad status code from server.');
+					}
+					return response.json();
+				})
 			}
 		}
 	}
@@ -41,27 +54,11 @@ self.addEventListener('notificationclick', function(event) {
 				for (var i = 0; i < clientList.length; i++) {
 					var client = clientList[i];
 					if ('focus' in client) {
-						client.navigate(url).then(function (windowClient) {
-							windowClient.focus();
-							if (!event.reply) {
-								windowClient.postMessage({
-									message: event.reply,
-									time: new Date().toString(),
-								});
-							} 
-						});
+						client.navigate(url);
 						return client.focus();
 					}
 				}
-				clients.openWindow(url).then(function (windowClient) {
-					windowClient.focus();
-					if (!event.reply) {
-						windowClient.postMessage({
-							message: event.reply,
-							time: new Date().toString(),
-						});
-					} 
-				})
+				return clients.openWindow(url);
 			}
 		))
 	}

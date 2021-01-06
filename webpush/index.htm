@@ -107,11 +107,6 @@ function sendSubscriptionToBackEnd(subscription) {
 	throw new Error('Bad status code from server.');
 	}
 	return response.json();
-})
-.then(function(responseData) {
-	if (!(responseData.data && responseData.data.success)) {
-	throw new Error('Bad response from server.');
-	}
 });
 }
 
