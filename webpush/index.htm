@@ -22,6 +22,7 @@ function updateBtn(){
 			} else {
 				pushButton.innerText = "Desabilitar";
 				pushButton.onclick = function() { unregisterNotification()};
+				document.querySelector("#teste").innerHTML = JSON.stringify(subscription);
 			};
 		})
 	})
