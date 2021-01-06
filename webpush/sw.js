@@ -37,8 +37,9 @@ self.addEventListener('notificationclick', function(event) {
 							break;
 					}
 					}
-					if (clients.openWindow)
-						return clients.openWindow('/');
+					if (clients.openWindow) {
+						clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
+					}
 				}
 				// clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
 			))
