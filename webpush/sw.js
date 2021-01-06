@@ -30,11 +30,13 @@ self.addEventListener('notificationclick', function(event) {
 			)
 		}
 	} else {
-		var action = event.notification.data.find(element => element["action"]=== event.action);
-		if (typeof action == "object" && typeof action["url"] == "string"){
-			event.waitUntil(
-				clients.openWindow(action["url"])
-			)
+		if (typeof event.notification.data["actions"] == "object") {
+			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
+			if (typeof action == "object" && typeof action["url"] == "string"){
+				event.waitUntil(
+					clients.openWindow(action["url"])
+				)
+			}
 		}
 	}
 });
