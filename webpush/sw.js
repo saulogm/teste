@@ -23,10 +23,24 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
 	const clickedNotification = event.notification;
 	clickedNotification.close();
+
 	if (!event.action) {
 		if (typeof event.notification.data["url"] == "string") {
 			event.waitUntil(
-				clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
+				clients.matchAll({
+					type: "window"
+					}).then(function(clientList) {
+					for (var i = 0; i < clientList.length; i++) {
+						var client = clientList[i];
+						if (client.url.indexOf(event.notification.data["url"]) >=0  && 'focus' in client) {
+							client.focus();
+							break;
+					}
+					}
+					if (clients.openWindow)
+						return clients.openWindow('/');
+				}
+				// clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
 			)
 		}
 	} else {
@@ -34,7 +48,7 @@ self.addEventListener('notificationclick', function(event) {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
 				event.waitUntil(
-					clients.openWindow(action["url"]).then(windowClient => windowClient ? windowClient.focus() : null)
+					clients.openWindow(action["url"])	//.then(windowClient => windowClient ? windowClient.focus() : null)
 				)
 			}
 		}
