@@ -1,7 +1,3 @@
-// Copyright 2015 Peter Beverloo. All rights reserved.
-// Use of this source code is governed by the MIT license, a copy of which can
-// be found in the LICENSE file.
-
 self.addEventListener('install', function(event) {
 	event.waitUntil(skipWaiting());
 });
@@ -33,15 +29,11 @@ self.addEventListener('notificationclick', function(event) {
 					for (var i = 0; i < clientList.length; i++) {
 						var client = clientList[i];
 						if (client.url.indexOf(event.notification.data["url"]) >=0  && 'focus' in client) {
-							client.focus();
-							break;
+							return client.focus();
+						}
 					}
-					}
-					if (clients.openWindow) {
-						clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
-					}
+					clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
 				}
-				// clients.openWindow(event.notification.data.url).then(windowClient => windowClient ? windowClient.focus() : null)
 			))
 		}
 	} else {
