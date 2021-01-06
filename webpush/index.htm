@@ -16,7 +16,10 @@ function updateBtn(){
 	navigator.serviceWorker.register('sw.js').then(function(reg) {
 		reg.pushManager.getSubscription().then(function(subscription) {
 			var pushButton = document.querySelector('.js-push-button');
-			if (Notification.permission!="granted" || subscription==null){
+			if (Notification.permission==="blocked"){
+				pushButton.innerText = "Desabilitado";
+				pushButton.disabled = true;
+			} else if (Notification.permission!="granted" || subscription==null){
 				pushButton.innerText = "Habilitar";
 				pushButton.onclick	= function() { askPermission()};
 			} else {
