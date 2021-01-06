@@ -11,14 +11,19 @@ self.addEventListener('push', function(event) {
 
 	var title = data.title;
 	var options = data.options;
+	if (typeof options["data"]=="object" && typeof options.data["timestamp"]=="string") {
+		options["timestamp"]	= Date.parse(options.data["timestamp"]);
+	}
 
-	if (typeof options.data["metodo"]=="string" && options.data.metodo=="delete"){
+	if (typeof options["data"]=="object" && typeof options.data["metodo"]=="string" && options.data.metodo=="delete"){
+		//Envio para deletar mensagem do app
 		self.registration.getNotifications({ "tag" : options.tag, "title": title }).then(function(notifications) {
 			notifications.forEach(function(notification) {
 				notification.close();
 			});
 		});
 	} else {
+		//necessario implementar se a mensagem de notificação ainda é valida
 		event.waitUntil(
 			self.registration.showNotification(title, options)
 		);
