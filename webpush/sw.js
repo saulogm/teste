@@ -29,5 +29,12 @@ self.addEventListener('notificationclick', function(event) {
 				clients.openWindow(event.notification.data.url)
 			)
 		}
+	} else {
+		var action = event.notification.data.find(element => element["action"]=== event.action);
+		if (typeof action == "object" && typeof action["url"] == "string"){
+			event.waitUntil(
+				clients.openWindow(action["url"])
+			)
+		}
 	}
-  });
+});
