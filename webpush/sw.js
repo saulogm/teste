@@ -1,3 +1,6 @@
+/*
+autor: Saulo Gomes Martins
+*/
 self.addEventListener('install', function(event) {
 	event.waitUntil(skipWaiting());
 });
@@ -23,7 +26,6 @@ self.addEventListener('push', function(event) {
 			});
 		});
 	} else {
-		//necessario implementar se a mensagem de notificação ainda é valida
 		event.waitUntil(
 			self.registration.showNotification(title, options)
 		);
