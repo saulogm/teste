@@ -27,7 +27,7 @@ self.addEventListener('push', function(event) {
 
 self.addEventListener('notificationclose', function(event) {
 	//Se já respondeu
-})
+});
 
 self.addEventListener('notificationclick', function(event) {
 	var url = "";
