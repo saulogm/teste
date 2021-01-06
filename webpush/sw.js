@@ -12,9 +12,22 @@ self.addEventListener('push', function(event) {
 	var title = data.title;
 	var options = data.options;
 
-	event.waitUntil(
-		self.registration.showNotification(title, options));
+	if (typeof options.data["metodo"]=="string" && options.data.metodo=="delete"){
+		self.registration.getNotifications({ "tag" : options.tag, "title": title }).then(function(notifications) {
+			notifications.forEach(function(notification) {
+				notification.close();
+			});
+		});
+	} else {
+		event.waitUntil(
+			self.registration.showNotification(title, options)
+		);
+	}
 });
+
+self.addEventListener('notificationclose', function(event) {
+	//Se já respondeu
+}
 
 self.addEventListener('notificationclick', function(event) {
 	var url = "";
@@ -41,10 +54,9 @@ self.addEventListener('notificationclick', function(event) {
 					if (!response.ok) {
 						throw new Error('Bad status code from server.');
 					}
-					console.log('enviado aprovação para o servidor');
 					return response.json();
 				}).catch(function(error) {
-					console.log('There has been a problem with your fetch operation: ' + error.message);
+					console.log('problem with your fetch operation: ' + error.message);
 				  })
 			}
 		}

@@ -107,6 +107,8 @@ function sendSubscriptionToBackEnd(subscription) {
 	throw new Error('Bad status code from server.');
 	}
 	return response.json();
+}).catch(function(error) {
+	console.log('Problema fetch operation: ' + error.message);
 });
 }
 
