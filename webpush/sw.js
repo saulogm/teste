@@ -46,6 +46,7 @@ self.addEventListener('notificationclick', function(event) {
 			url	= event.notification.data["url"];
 		}
 	} else {
+		clickedNotification.close();
 		if (typeof event.notification.data["actions"] == "object") {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
