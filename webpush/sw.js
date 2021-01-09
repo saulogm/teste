@@ -20,7 +20,7 @@ self.addEventListener('push', function(event) {
 
 	if (typeof options["data"]=="object" && typeof options.data["metodo"]=="string" && options.data.metodo=="delete"){
 		//Envio para deletar mensagem do app
-		self.registration.getNotifications({ "tag" : options.tag, "title": title }).then(function(notifications) {
+		self.registration.getNotifications({ "tag" : options.tag }).then(function(notifications) {
 			notifications.forEach(function(notification) {
 				notification.close();
 			});
@@ -46,7 +46,6 @@ self.addEventListener('notificationclick', function(event) {
 			url	= event.notification.data["url"];
 		}
 	} else {
-		clickedNotification.close();
 		if (typeof event.notification.data["actions"] == "object") {
 			var action = event.notification.data.actions.find(element => element["action"]=== event.action);
 			if (typeof action == "object" && typeof action["url"] == "string"){
