@@ -129,25 +129,16 @@ function urlBase64ToUint8Array(base64String) {
 	return outputArray;
 }
 
-	var ndef
-	if ("NDEFReader" in window) { 
-		ndef = new NDEFReader();
-		await ndef.scan();
-		ndef.onreading = async (event) => {
-		const decoder = new TextDecoder();
-		for (const record of event.message.records) {
-			console.log("Record type:  " + record.recordType);
-			console.log("MIME type:    " + record.mediaType);
-			console.log("=== data ===\n" + decoder.decode(record.data));
-		}
-
-		try {
-			await ndef.write("Overriding data is fun!");
-		} catch(error) {
-			console.log(`Write failed :-( try again: ${error}.`);
-		}
-		};
-	}
+const ndef = new NDEFReader();
+await ndef.scan();
+ndef.onreading = async (event) => {
+  const decoder = new TextDecoder();
+  for (const record of event.message.records) {
+    console.log("Record type:  " + record.recordType);
+    console.log("MIME type:    " + record.mediaType);
+    console.log("=== data ===\n" + decoder.decode(record.data));
+  }
+};
 </script>
 
 </header>
