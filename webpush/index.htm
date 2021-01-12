@@ -128,17 +128,18 @@ function urlBase64ToUint8Array(base64String) {
 	}
 	return outputArray;
 }
-
-const ndef = new NDEFReader();
-await ndef.scan();
-ndef.onreading = async (event) => {
-  const decoder = new TextDecoder();
-  for (const record of event.message.records) {
-    console.log("Record type:  " + record.recordType);
-    console.log("MIME type:    " + record.mediaType);
-    console.log("=== data ===\n" + decoder.decode(record.data));
-  }
-};
+async function start() {
+	const ndef = new NDEFReader();
+	await ndef.scan();
+	ndef.onreading = async (event) => {
+	const decoder = new TextDecoder();
+	for (const record of event.message.records) {
+		console.log("Record type:  " + record.recordType);
+		console.log("MIME type:    " + record.mediaType);
+		console.log("=== data ===\n" + decoder.decode(record.data));
+	}
+	};
+}
 </script>
 
 </header>
