@@ -9,7 +9,6 @@ if ('serviceWorker' in navigator) {
 if (('PushManager' in window)) {
 	window.addEventListener('load', function() {
 	updateBtn();
-	start()
 })
 };
 
@@ -141,6 +140,9 @@ async function start() {
 	}
 	};
 }
+function setcartao(cCartao){
+	document.querySelector("#cCartao").value=cCartao;
+}
 </script>
 
 </header>
@@ -148,7 +150,9 @@ async function start() {
 Notifica&ccedil;&atilde;o: 
 <button id="botao" class="js-push-button">
 	Habilitar
-</button>
+</button><br>
+Cartao:
+<input type="text" id="cCartao" value=""/>
 <div id="teste">
 <div>
 </body>
