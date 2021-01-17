@@ -8,34 +8,38 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 
 <script>
-// if ('serviceWorker' in navigator) {
-// 	registerServiceWorker();
-// }
+if ('serviceWorker' in navigator) {
+	registerServiceWorker();
+}
 
-// if (('PushManager' in window)) {
-// 	window.addEventListener('load', function() {
-// 	updateBtn();
-// })
-// };
+if (('PushManager' in window)) {
+	window.addEventListener('load', function() {
+	updateBtn();
+})
+};
 
 function updateBtn(){
 	navigator.serviceWorker.register('sw.js').then(function(reg) {
 		reg.pushManager.getSubscription().then(function(subscription) {
-			var pushButton = document.querySelector('.js-push-button');
+			var pushflag = document.querySelector('flagnot');
+			var pushtxt = document.querySelector('txtnot');
 			if (Notification.permission==="blocked"){
-				pushButton.innerText = "Desabilitado";
-				pushButton.disabled = true;
+				pushtxt.innerText = "Bloqueado";
+				pushflag.checked = false;
+				pushflag.disabled = true;
 			} else if (Notification.permission!="granted" || subscription==null){
-				pushButton.innerText = "Habilitar";
-				pushButton.onclick	= function() { askPermission()};
+				pushtxt.innerText = "Desabilitado";
+				pushflag.checked = false;
+				pushflag.onclick	= function() { askPermission()};
 			} else {
-				pushButton.innerText = "Desabilitar";
-				pushButton.onclick = function() { unregisterNotification()};
+				pushtxt.innerText = "Habilitado";
+				pushflag.checked = true;
+				pushflag.onclick = function() { unregisterNotification()};
 				document.querySelector("#teste").innerHTML = JSON.stringify(subscription);
 			};
 		})
 	})
-}
+// }
 
 function unregisterNotification() {
 	navigator.serviceWorker.ready.then(function(reg) {
@@ -55,6 +59,7 @@ function registerServiceWorker() {
 	.then(function(registration) {
 		registration.update();
 		console.log('Service worker successfully registered.');
+		document.querySelector("#teste").innerHTML = "Service worker successfully registered.";
 		return registration;
 	})
 	.catch(function(err) {
@@ -158,14 +163,18 @@ function setcartao(cCartao){
 		<h3>Cartao:</h3>
 		<input type="text" id="cCartao" class="form-control" value="" />
 		<br>
-<!--
+
 		POC Notifica&ccedil;&atilde;o: <br>
+		<div class="form-check form-switch">
+			<input class="form-check-input" type="checkbox" id="flagnot" disabled>
+			<label class="form-check-label" for="botao" id="txtnot">Sem suporte</label>
+		</div>
 		<button id="botao" class="btn btn-primary js-push-button" disabled>
 			Sem suporte
 		</button><br>
 		<div id="teste">
 		</div>
 	</div>
--->
+
 </body>
 </html>
