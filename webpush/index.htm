@@ -28,13 +28,15 @@ function updateBtn(){
 				pushflag.checked = false;
 				pushflag.disabled = true;
 			} else if (Notification.permission!="granted" || subscription==null){
+				pushflag.disabled = false;
 				pushtxt.innerText = "Desabilitado";
 				pushflag.checked = false;
-				pushflag.onclick	= function() { askPermission()};
+				pushflag.onchange	= function() { askPermission()};
 			} else {
+				pushflag.disabled = false;
 				pushtxt.innerText = "Habilitado";
 				pushflag.checked = true;
-				pushflag.onclick = function() { unregisterNotification()};
+				pushflag.onchange = function() { unregisterNotification()};
 				document.querySelector("#teste").innerHTML = JSON.stringify(subscription);
 			};
 		})
