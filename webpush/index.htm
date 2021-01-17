@@ -21,8 +21,8 @@ if (('PushManager' in window)) {
 function updateBtn(){
 	navigator.serviceWorker.register('sw.js').then(function(reg) {
 		reg.pushManager.getSubscription().then(function(subscription) {
-			var pushflag = document.querySelector('flagnot');
-			var pushtxt = document.querySelector('txtnot');
+			var pushflag = document.querySelector('#flagnot');
+			var pushtxt = document.querySelector('#txtnot');
 			if (Notification.permission==="blocked"){
 				pushtxt.innerText = "Bloqueado";
 				pushflag.checked = false;
