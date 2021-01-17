@@ -32,6 +32,7 @@ function updateBtn(){
 				pushtxt.innerText = "Desabilitado";
 				pushflag.checked = false;
 				pushflag.onchange	= function() { askPermission()};
+				document.querySelector("#teste").innerHTML = "";
 			} else {
 				pushflag.disabled = false;
 				pushtxt.innerText = "Habilitado";
@@ -166,15 +167,13 @@ function setcartao(cCartao){
 		<input type="text" id="cCartao" class="form-control" value="" />
 		<br>
 
-		POC Notifica&ccedil;&atilde;o: <br>
+		<h1>POC Notifica&ccedil;&atilde;o:</h1> <br>
 		<div class="form-check form-switch">
 			<input class="form-check-input" type="checkbox" id="flagnot" disabled>
 			<label class="form-check-label" for="botao" id="txtnot">Sem suporte</label>
 		</div>
-		<button id="botao" class="btn btn-primary js-push-button" disabled>
-			Sem suporte
-		</button><br>
-		<div id="teste">
+		<br>
+		<div id="teste" class="text-break">
 		</div>
 	</div>
 
