@@ -159,10 +159,9 @@ function setcartao(cCartao){
 }
 
 //codbar
-if (('BarcodeDetector' in window) &&
-    ((await BarcodeDetector.getSupportedFormats()).includes('qr_code'))) {
-  console.log('QR code scanning is supported.');
-}
+// if (('BarcodeDetector' in window) && ((await BarcodeDetector.getSupportedFormats()).includes('qr_code'))) {
+//   console.log('QR code scanning is supported.');
+// }
 const barcodeDetector = new BarcodeDetector({
   // (Optional) A series of barcode formats to search for.
   // Not all formats may be supported on all platforms
