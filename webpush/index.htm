@@ -159,6 +159,10 @@ function setcartao(cCartao){
 }
 
 //codbar
+if (('BarcodeDetector' in window) &&
+    ((await BarcodeDetector.getSupportedFormats()).includes('qr_code'))) {
+  console.log('QR code scanning is supported.');
+}
 const barcodeDetector = new BarcodeDetector({
   // (Optional) A series of barcode formats to search for.
   // Not all formats may be supported on all platforms
@@ -178,11 +182,13 @@ const barcodeDetector = new BarcodeDetector({
     'upc_e'
   ]
 });
-try {
-  const barcodes = await barcodeDetector.detect(image);
-  barcodes.forEach(barcode => searchProductDatabase(barcode));
-} catch (e) {
-  console.error('Barcode detection failed:', e);
+async function scancodbar(){
+	try {
+	const barcodes = await barcodeDetector.detect(image);
+	barcodes.forEach(barcode => searchProductDatabase(barcode));
+	} catch (e) {
+	console.error('Barcode detection failed:', e);
+	}
 }
 </script>
 
@@ -192,6 +198,7 @@ try {
 		<h1>POC NFC<br></h1>
 		<h3>Cartao:</h3>
 		<input type="text" id="cCartao" class="form-control" value="" />
+		<input type="button" id="btncam" value="cam" onclick="javascript:scancodbar()">
 		<br>
 
 		<h1>POC Notifica&ccedil;&atilde;o:</h1> <br>
