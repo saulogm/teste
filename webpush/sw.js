@@ -11,9 +11,18 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('push', function(event) {	
 	var data = event.data.json();
-
+	
 	var title = data.title;
 	var options = data.options;
+
+	if (event.data) {
+		console.log('This push event has data: ', event.data.text());
+	} else {
+		console.log('This push event has no data.');
+	}
+	event.waitUntil(
+		self.registration.showNotification(title, options)
+		);
 	//if (typeof options["data"]=="object" && typeof options.data["timestamp"]=="string") {
 	//	options["timestamp"]	= Date.parse(options.data["timestamp"]);
 	//}
@@ -26,9 +35,9 @@ self.addEventListener('push', function(event) {
 	//		});
 	//	});
 	//} else {
-		event.waitUntil(
-			self.registration.showNotification(title, options)
-		);
+		//event.waitUntil(
+		//	self.registration.showNotification(title, options);
+		//);
 	//}
 });
 
